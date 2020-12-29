@@ -13,7 +13,7 @@ public class ApiConfig {
 	@Bean
 	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>
 	  webServerFactoryCustomizer() {
-	    return factory -> factory.setContextPath(ApiConstants.CONTEXT_PATH);
+	    return factory -> factory.setContextPath(ApiConstants.ROOT_CONTEXT_PATH);
 	}
 	
 }

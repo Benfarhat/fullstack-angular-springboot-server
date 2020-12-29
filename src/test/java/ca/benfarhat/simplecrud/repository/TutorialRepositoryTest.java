@@ -22,7 +22,7 @@ import ca.benfarhat.simplecrud.repository.TutorialRepository;
 		scripts = {"/db/tutorial.sql"}, 
 		config = @SqlConfig(encoding = "utf-8", transactionMode = TransactionMode.ISOLATED))
 @DataJpaTest
-public class TutorialRepositoryTest {
+class TutorialRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
@@ -31,23 +31,24 @@ public class TutorialRepositoryTest {
 	TutorialRepository repository;
 
 	@Test
-	public void should_find_no_tutorials_if_repository_is_empty() {
+	void should_find_no_tutorials_if_repository_is_empty() {
 		Iterable<Tutorial> tutorials = repository.findAll();
 
 		assertThat(tutorials).isEmpty();
 	}
 
 	@Test
-	public void should_store_a_tutorial() {
+	void should_store_a_tutorial() {
 		Tutorial tutorial = repository
 				.save(Tutorial.builder().title("titre1").description("description1").published(true).build());
-		assertThat(tutorial).hasFieldOrPropertyWithValue("title", "titre1");
-		assertThat(tutorial).hasFieldOrPropertyWithValue("description", "description1");
-		assertThat(tutorial).hasFieldOrPropertyWithValue("published", true);
+		assertThat(tutorial)
+			.hasFieldOrPropertyWithValue("title", "titre1")
+			.hasFieldOrPropertyWithValue("description", "description1")
+			.hasFieldOrPropertyWithValue("published", true);
 	}
 
 	@Test
-	public void should_find_all_tutorials() {
+	void should_find_all_tutorials() {
 		Tutorial tut1 = Tutorial.builder().title("titre1").description("description1").published(true).build();
 		entityManager.persist(tut1);
 
@@ -63,7 +64,7 @@ public class TutorialRepositoryTest {
 	}
 
 	@Test
-	public void should_find_tutorial_by_id() {
+	void should_find_tutorial_by_id() {
 		Tutorial tut1 = Tutorial.builder().title("titre1").description("description1").published(true).build();
 		entityManager.persist(tut1);
 
@@ -76,7 +77,7 @@ public class TutorialRepositoryTest {
 	}
 
 	@Test
-	public void should_find_published_tutorials() {
+	void should_find_published_tutorials() {
 		Tutorial tut1 = Tutorial.builder().title("titre1").description("description1").published(true).build();
 		entityManager.persist(tut1);
 
@@ -92,7 +93,7 @@ public class TutorialRepositoryTest {
 	}
 
 	@Test
-	public void should_find_tutorials_by_title_containing_string() {
+	void should_find_tutorials_by_title_containing_string() {
 		Tutorial tut1 = Tutorial.builder().title("Spring boot").description("description1").published(true).build();
 		entityManager.persist(tut1);
 
@@ -108,7 +109,7 @@ public class TutorialRepositoryTest {
 	}
 
 	@Test
-	public void should_update_tutorial_by_id() {
+	void should_update_tutorial_by_id() {
 		Tutorial tut1 = Tutorial.builder().title("titre1").description("description1").published(true).build();
 		entityManager.persist(tut1);
 
@@ -132,7 +133,7 @@ public class TutorialRepositoryTest {
 	}
 
 	@Test
-	public void should_delete_tutorial_by_id() {
+	void should_delete_tutorial_by_id() {
 		Tutorial tut1 = Tutorial.builder().title("titre1").description("description1").published(true).build();
 		entityManager.persist(tut1);
 
@@ -150,7 +151,7 @@ public class TutorialRepositoryTest {
 	}
 
 	@Test
-	public void should_delete_all_tutorials() {
+	void should_delete_all_tutorials() {
 		Tutorial tut1 = Tutorial.builder().title("titre1").description("description1").published(true).build();
 		entityManager.persist(tut1);
 

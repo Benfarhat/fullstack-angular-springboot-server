@@ -6,9 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -22,6 +25,8 @@ import lombok.Data;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor 
 @Entity
 @Table(name = "tutorials")
 public class Tutorial {
@@ -31,6 +36,7 @@ public class Tutorial {
 	private long id;
 	
 	@Column(name = "title")
+	@NotNull
 	private String title;
 	
 	@Column(name = "description")

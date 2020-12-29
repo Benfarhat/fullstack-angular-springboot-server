@@ -3,7 +3,7 @@ package ca.benfarhat.simplecrud.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import ca.benfarhat.simplecrud.model.Tutorial;
 
@@ -17,9 +17,10 @@ import ca.benfarhat.simplecrud.model.Tutorial;
  *
  */
 
-public interface TutorialRepository extends CrudRepository<Tutorial, Long> {
+public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
 	
-	Optional<Tutorial> findById(Long id); 
+	
 	List<Tutorial> findByPublished(boolean published);
+	
 	List<Tutorial> findByTitleContaining(String title);
 }
