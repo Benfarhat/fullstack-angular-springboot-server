@@ -1,11 +1,11 @@
 package ca.benfarhat.simplecrud.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import ca.benfarhat.simplecrud.model.Tutorial;
+import ca.benfarhat.simplecrud.entity.Tutorial;
 
 /**
  * 
@@ -17,8 +17,8 @@ import ca.benfarhat.simplecrud.model.Tutorial;
  *
  */
 
+@Repository
 public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
-	
 	
 	List<Tutorial> findByPublished(boolean published);
 	

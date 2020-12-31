@@ -14,7 +14,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.jdbc.SqlConfig.TransactionMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import ca.benfarhat.simplecrud.model.Tutorial;
+import ca.benfarhat.simplecrud.entity.Tutorial;
 import ca.benfarhat.simplecrud.repository.TutorialRepository;
 
 @ExtendWith(SpringExtension.class)

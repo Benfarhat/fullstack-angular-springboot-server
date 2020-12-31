@@ -20,6 +20,14 @@ import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * SwaggerConfig: Configuration swagger 
+ * 
+ * @author Benfarhat Elyes
+ * @since 2020-12-30
+ * @version 1.0.0
+ *
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

@@ -1,5 +1,6 @@
 package ca.benfarhat.simplecrud.controller;
 
+import static ca.benfarhat.simplecrud.ApiConstant.CST_TUTORIAL_CTX;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -21,69 +22,72 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import ca.benfarhat.simplecrud.model.Tutorial;
-import ca.benfarhat.simplecrud.repository.TutorialRepository;
+import ca.benfarhat.simplecrud.dto.TutorialDto;
+import ca.benfarhat.simplecrud.service.TutorialService;
+
+/**
+ * TutorialDtoController: Controller pour l'entité TutorialDto
+ * 
+ * @author Benfarhat Elyes
+ * @since 2020-12-30
+ * @version 1.0.0
+ *
+ */
 
 @RestController
-@RequestMapping("/tutorial")
+@RequestMapping(value = CST_TUTORIAL_CTX)
 public class TutorialController {
 
 	@Autowired
-	TutorialRepository tutorialRepository;
+	TutorialService tutorialService;
 
 	@GetMapping(path = "", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<List<Tutorial>> getAllTutorials() {
-		return ResponseEntity.ok(tutorialRepository.findAll());
-
+	public ResponseEntity<List<TutorialDto>> getAllTutorialDtos() {
+		return ResponseEntity.ok(tutorialService.findAll());
 	}
 
 	@GetMapping(path = "/contains", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
+	public ResponseEntity<List<TutorialDto>> getAllTutorialDtos(@RequestParam(required = false) String title) {
 		if (Objects.isNull(title)) {
-			return ResponseEntity.ok(tutorialRepository.findAll());
+			return ResponseEntity.ok(tutorialService.findAll());
 		} else {
-			return ResponseEntity.ok(tutorialRepository.findByTitleContaining(title));
+			return ResponseEntity.ok(tutorialService.findByTitleContaining(title));
 		}
-
 	}
 
 	@GetMapping(path = "/{id}", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
-		Tutorial tutorial = tutorialRepository.findById(id).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé"));
-		return ResponseEntity.ok(tutorial);
+	public ResponseEntity<TutorialDto> getTutorialDtoById(@PathVariable("id") long id) {
+		return ResponseEntity.ok(tutorialService.getTutorialDtoById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé")));
 	}
 
 	@PostMapping(path = "/add", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<Tutorial> createTutorial(@Valid @RequestBody Tutorial tutorial) {
-		Tutorial aAjouter = tutorialRepository.save(tutorial);
+	public ResponseEntity<TutorialDto> createTutorialDto(@Valid @RequestBody TutorialDto tutorialDto) {
+		TutorialDto aAjouter = tutorialService.add(tutorialDto);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(aAjouter.getId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
 	@PutMapping(path = "/{id}", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-		tutorialRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé"));
-		tutorial.setId(id);
-		return ResponseEntity.ok(tutorialRepository.save(tutorial));
+	public ResponseEntity<TutorialDto> updateTutorialDto(@PathVariable("id") long id, @RequestBody TutorialDto tutorialDto) {
+		return ResponseEntity.ok(tutorialService.update(id, tutorialDto).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé")));
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteTutorial(@PathVariable("id") long id) {
-		tutorialRepository.deleteById(id);
+	public ResponseEntity<Void> deleteTutorialDto(@PathVariable("id") long id) {
+		tutorialService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@DeleteMapping("/tutorials")
-	public ResponseEntity<Void> deleteAllTutorials() {
-		tutorialRepository.deleteAll();
+	@DeleteMapping("/TutorialDtos")
+	public ResponseEntity<Void> deleteAllTutorialDtos() {
+		tutorialService.deleteAll();
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/published")
-	public ResponseEntity<List<Tutorial>> findByPublished() {
-		return ResponseEntity.ok(tutorialRepository.findByPublished(true));
+	public ResponseEntity<List<TutorialDto>> findByPublished() {
+		return ResponseEntity.ok(tutorialService.findByPublished(true));
 	}
 
 }

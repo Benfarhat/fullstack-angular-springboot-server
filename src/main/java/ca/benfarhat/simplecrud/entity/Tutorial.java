@@ -1,4 +1,4 @@
-package ca.benfarhat.simplecrud.model;
+package ca.benfarhat.simplecrud.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +34,7 @@ public class Tutorial {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Column(name = "title")
-	@NotNull
+	@Column(name = "title", nullable = false)
 	private String title;
 	
 	@Column(name = "description")
