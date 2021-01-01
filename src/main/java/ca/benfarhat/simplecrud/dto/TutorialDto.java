@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.ALWAYS)
 public class TutorialDto {
 	
-	private long id;
+	private Long id;
 	@NotNull
 	@NotBlank(message = "Le titre ne doit pas être vide")
 	@JsonProperty("titre")

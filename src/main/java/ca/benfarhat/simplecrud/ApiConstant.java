@@ -11,8 +11,9 @@ package ca.benfarhat.simplecrud;
  */
 
 public final class ApiConstant {
-	
-	public static final String CST_CONTEXT_PATH = "/api/v1.0";
+
+	public static final String CST_API_VERSION = "/v1";
+	public static final String CST_CONTEXT_PATH = "/api" + CST_API_VERSION;
 	public static final String CST_TUTORIAL_CTX = "/tutorial";
 	
 	private ApiConstant() {

@@ -1,6 +1,7 @@
 package ca.benfarhat.simplecrud.controller;
 
 import static ca.benfarhat.simplecrud.ApiConstant.CST_TUTORIAL_CTX;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -47,11 +48,11 @@ public class TutorialController {
 	}
 
 	@GetMapping(path = "/contains", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<List<TutorialDto>> getAllTutorialDtos(@RequestParam(required = false) String title) {
-		if (Objects.isNull(title)) {
+	public ResponseEntity<List<TutorialDto>> getAllTutorialDtos(@RequestParam(required = false) String search) {
+		if (Objects.isNull(search)) {
 			return ResponseEntity.ok(tutorialService.findAll());
 		} else {
-			return ResponseEntity.ok(tutorialService.findByTitleContaining(title));
+			return ResponseEntity.ok(tutorialService.findByTitleContaining(search));
 		}
 	}
 
@@ -60,7 +61,7 @@ public class TutorialController {
 		return ResponseEntity.ok(tutorialService.getTutorialDtoById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé")));
 	}
 
-	@PostMapping(path = "/add", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@PostMapping(path = "", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<TutorialDto> createTutorialDto(@Valid @RequestBody TutorialDto tutorialDto) {
 		TutorialDto aAjouter = tutorialService.add(tutorialDto);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -70,7 +71,7 @@ public class TutorialController {
 
 	@PutMapping(path = "/{id}", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<TutorialDto> updateTutorialDto(@PathVariable("id") long id, @RequestBody TutorialDto tutorialDto) {
-		return ResponseEntity.ok(tutorialService.update(id, tutorialDto).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé")));
+		return ResponseEntity.ok(tutorialService.update(id, tutorialDto).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tutoriel [" + id + "]non trouvé")));	
 	}
 
 	@DeleteMapping("/{id}")

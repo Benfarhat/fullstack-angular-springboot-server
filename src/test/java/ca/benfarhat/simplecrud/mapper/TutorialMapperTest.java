@@ -31,12 +31,12 @@ class TutorialMapperTest {
 	
 	@BeforeEach
 	void init() {
-		tuto1 = Tutorial.builder().id(0).title("titre1").description("description1").published(true).build();
-		tuto2 = Tutorial.builder().id(1).title("titre2").build();
-		tuto3 = Tutorial.builder().id(2).title("titre3").published(true).build();
-		tutoDto1 = TutorialDto.builder().id(0).title("titreDto1").description("descriptionDto1").published(true).build();
-		tutoDto2 = TutorialDto.builder().id(1).title("titreDto2").description("descriptionDto2").build();
-		tutoDto3 = TutorialDto.builder().id(2).title("titreDto3").published(true).build();
+		tuto1 = Tutorial.builder().id(0L).title("titre1").description("description1").published(true).build();
+		tuto2 = Tutorial.builder().id(1L).title("titre2").build();
+		tuto3 = Tutorial.builder().id(2L).title("titre3").published(true).build();
+		tutoDto1 = TutorialDto.builder().id(0L).title("titreDto1").description("descriptionDto1").published(true).build();
+		tutoDto2 = TutorialDto.builder().id(1L).title("titreDto2").description("descriptionDto2").build();
+		tutoDto3 = TutorialDto.builder().id(2L).title("titreDto3").published(true).build();
 	}
 	
 	

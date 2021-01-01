@@ -78,6 +78,7 @@ public class TutorialService {
 			return Optional.empty();
 		}
 		Tutorial aSauvegarder  = aModifier.get();
+		tutorialDto.setId(id);
 		tutorialMapper.updateEntityFromDto(tutorialDto, aSauvegarder);
 		TutorialDto dtoapresSauvegarde =  tutorialMapper.entityToDto(tutorialRepository.save(aSauvegarder));
 		return Optional.of(dtoapresSauvegarde);

@@ -32,7 +32,7 @@ public class Tutorial {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	@Column(name = "title", nullable = false)
 	private String title;
