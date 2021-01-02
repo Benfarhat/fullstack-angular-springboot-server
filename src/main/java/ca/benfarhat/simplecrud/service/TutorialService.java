@@ -4,13 +4,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.cache.annotation.CacheDefaults;
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CachePut;
+import javax.cache.annotation.CacheValue;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import ca.benfarhat.simplecrud.CacheConstant;
 import ca.benfarhat.simplecrud.dto.TutorialDto;
 import ca.benfarhat.simplecrud.entity.Tutorial;
 import ca.benfarhat.simplecrud.mapper.TutorialMapper;
 import ca.benfarhat.simplecrud.repository.TutorialRepository;
+
 
 /**
  * TutorialService: Service pour les tutoriaux (regroupe notamment les appels au repository ou au mapper) 
@@ -22,6 +31,7 @@ import ca.benfarhat.simplecrud.repository.TutorialRepository;
  */
 
 @Service
+@CacheDefaults(cacheName = CacheConstant.CST_CACHE_TUTORIAL)
 public class TutorialService {
 
 	@Autowired
@@ -34,6 +44,7 @@ public class TutorialService {
 	 * Retourne tous les tutoriels
 	 * @return
 	 */
+	@Cacheable(sync = true)
 	public List<TutorialDto> findAll() {
 		return tutorialRepository.findAll().stream().map(tutorialMapper::entityToDto).collect(Collectors.toList());
 	}
@@ -43,6 +54,7 @@ public class TutorialService {
 	 * @param title partie à rechercher
 	 * @return
 	 */
+	@Cacheable(value = CacheConstant.CST_CACHE_TUTORIAL, sync = true)
 	public List<TutorialDto> findByTitleContaining(String title) {
 		return tutorialRepository.findByTitleContaining(title).stream().map(tutorialMapper::entityToDto).collect(Collectors.toList());
 	}
@@ -52,7 +64,8 @@ public class TutorialService {
 	 * @param id identifiant du dto/entité
 	 * @return
 	 */
-	public Optional<TutorialDto> getTutorialDtoById(long id) {
+	@Cacheable(value = CacheConstant.CST_CACHE_TUTORIAL)
+	public Optional<TutorialDto> getTutorialDtoById(@CacheKey long id) {
 		return tutorialRepository.findById(id).map(tutorialMapper::entityToDto);
 	}
 
@@ -61,7 +74,8 @@ public class TutorialService {
 	 * @param tutorialDto dto contenant les données a ajouter
 	 * @return
 	 */
-	public TutorialDto add(TutorialDto tutorialDto) {
+	@CachePut
+	public TutorialDto add( @CacheValue TutorialDto tutorialDto) {
 		Tutorial aAjouter = tutorialRepository.save(tutorialMapper.dtoToEntity(tutorialDto));
 		return tutorialMapper.entityToDto(aAjouter);
 	}
@@ -72,7 +86,8 @@ public class TutorialService {
 	 * @param tutorialDto dto contenant les données a modifier
 	 * @return
 	 */
-	public Optional<TutorialDto> update(long id, TutorialDto tutorialDto) {
+	@CachePut
+	public Optional<TutorialDto> update(long id, @CacheValue TutorialDto tutorialDto) {
 		Optional<Tutorial> aModifier = tutorialRepository.findById(id);
 		if (!aModifier.isPresent()) {
 			return Optional.empty();
@@ -88,13 +103,15 @@ public class TutorialService {
 	 * Supprimer un tutoriel
 	 * @param id identifiant du tuto
 	 */
-	public void delete(long id) {
+	@CacheEvict
+	public void delete(@CacheKey long id) {
 		tutorialRepository.deleteById(id);
 	}
 
 	/**
 	 * Supprimer tous les tutoriels
 	 */
+	@CacheEvict(allEntries = true)
 	public void deleteAll() {
 		tutorialRepository.deleteAll();
 	}
