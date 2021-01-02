@@ -55,11 +55,9 @@ public class CacheConfig {
         CacheConfiguration<Object, Object> cacheConfiguration1000 = getCacheConfiguration(1000, 0);
         CacheConfiguration<Object, Object> cacheConfiguration500WithExpiry3 = getCacheConfiguration(500, 3);
 
-        cacheManager.createCache(CacheConstant.CST_CACHE_TUTORIAL, Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration1000));
-
-        cacheManager.createCache(CacheConstant.CST_CACHE_TUTORIAL_PUBLISHED, Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration1000));
-        cacheManager.createCache(CacheConstant.CST_CACHE_TUTORIAL_BY_TITLE, Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration500WithExpiry3));
-        
+        createIfNotExists(cacheManager, CacheConstant.CST_CACHE_TUTORIAL, cacheConfiguration1000);
+        createIfNotExists(cacheManager, CacheConstant.CST_CACHE_TUTORIAL_PUBLISHED, cacheConfiguration1000);
+        createIfNotExists(cacheManager, CacheConstant.CST_CACHE_TUTORIAL_BY_TITLE, cacheConfiguration500WithExpiry3);
         return cacheManager;
     }
     
@@ -71,6 +69,23 @@ public class CacheConfig {
     		ccb.withExpiry(epb);
     	}
     	return ccb.build();	
+    }
+    
+    /**
+     * Vérification lors de la création du cache
+     * Lors des tests par exemple avec SpringBootTest, il arrive qu'on reload le context plusieurs fois, 
+     * le soucis avec le cache c'est que cela va créer des caches qui existent déja, il y a deux solutions:
+     * Soit desactiver le cache dans le fichier application.properties/yaml des tests en mettant spring.cache.type=none
+     * Soit lors de la création on vérifie si le cache existe ou pas
+     * 
+     * @param cacheManager le gestionnaire de cache
+     * @param cacheName le nom du cache
+     * @param cacheConfiguration la configuration a utiliser
+     */
+    private void createIfNotExists(CacheManager cacheManager, String cacheName, CacheConfiguration<Object, Object> cacheConfiguration) {
+        if(cacheManager.getCache(cacheName) == null) {
+            cacheManager.createCache(cacheName, Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration));
+        }
     }
 
     @CacheEvict(allEntries = true, cacheNames = {

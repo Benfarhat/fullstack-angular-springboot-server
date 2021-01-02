@@ -44,7 +44,7 @@ public class TutorialService {
 	 * Retourne tous les tutoriels
 	 * @return
 	 */
-	@Cacheable(sync = true)
+	@Cacheable(value = CacheConstant.CST_CACHE_TUTORIAL, sync = true)
 	public List<TutorialDto> findAll() {
 		return tutorialRepository.findAll().stream().map(tutorialMapper::entityToDto).collect(Collectors.toList());
 	}
