@@ -10,7 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.core.Ordered;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
  */
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(SecurityProperties.DEFAULT_FILTER_ORDER + 1)
 @NoArgsConstructor
 public class SimpleCORSFilter implements Filter {
 
